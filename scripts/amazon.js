@@ -1,4 +1,4 @@
-//saving data
+/*//saving data by creating object inside array
 const products = [{
   image:'images/products/athletic-cotton-socks-6-pairs.jpg',
   name : 'Black and Gray Athletic Cotton Socks - 6 Pairs',
@@ -23,7 +23,16 @@ const products = [{
     count:56
   },
   priceCents:799
-}]; //creating object inside array
+},{
+  image:'images/products/black-2-slot-toaster.jpg',
+  name : '2 Slot Toaster - Black',
+  rating :{
+    stars:5,
+    count:2197
+  },
+  priceCents:1899
+}]; we are using the data given which is already existed */
+
 
 //combining individual strings(products) into one
 let productsHTML = ''; //each time we go through the loop we will add the html string into this string
