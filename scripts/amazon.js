@@ -84,16 +84,49 @@ products.forEach((product)=>{
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary">
+      <button class="add-to-cart-button button-primary js-add-to-cart"
+      data-product-id="${product.id}"> 
         Add to Cart
       </button>
     </div>
   `;
-  console.log(productsHTML);
-
+});
+  //console.log(productsHTML);
   document.querySelector('.js-products-grid').innerHTML=productsHTML; //replacing the innerhtml to js produced html productsHTML
 
-});//foreach takes object from products array and saves it in product parameter and runs it,
+  document.querySelectorAll('.js-add-to-cart')
+     .forEach((button)=>{
+      button.addEventListener('click',()=>{
+        const productId = button.dataset.productId; //accessing productname from all the datasets of the button.the name is converted form kabab case to camel case(in data-product-id , product-id to productId)
+        
+        let matchingItem;
+        cart.forEach((item)=>{
+          if(productId === item.productId){
+            matchingItem = item;
+          }
+        }); //looping through the cart to see if the item is already in the cart if yes then saving it in the matchingItem varible so that we can add its quantity 
+
+        if(matchingItem){
+          matchingItem.quantity++;
+        }else{
+          cart.push({
+            productId:productId,
+            quantity:1
+          });//pushing object to the cart created in cart.js
+        }
+        console.log(cart);
+      });//dataset property gives all the data attributes attached to the button
+     }); //selecting all add to cart buttons and looping through them and adding eventlistner
+
+
+
+
+
+
+
+
+
+  //foreach takes object from products array and saves it in product parameter and runs it,
 //for stars : ratings are in point and we cant save img in points so multiple with 10
 
 //document.querySelector('.js-products-grid') ---> using this text we can change the html inside the class js-products-grid to do that we use the property called innerhtml.
@@ -101,3 +134,14 @@ products.forEach((product)=>{
 
 /*to show 2 decimals after price we are using a method called .toFixed()  tofixed will convert a number into string and we can tell it how many decimals we want in brackets  */
 
+/* DATA ATTRIBUTE
+   it is just another html attribute
+   allows us to attach any infromation to an element
+   example <button class="add-to-cart-button button-primary js-add-to-cart"
+      data-product-name="${product.name}"> 
+      //now eachof these buttons have a data attribute.using this we can attach any information to an element(example button in this case)
+      we can also attach product image or price.sp now when we click this button we will get the name
+  Syntax: has to start with data-  then give it any name.but we shoud seperate the word with dash
+    //it is not good to use product name cause we can have different items with same id soo we will use id.as id is unique for every product
+ 
+  */
