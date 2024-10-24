@@ -114,9 +114,24 @@ products.forEach((product)=>{
             quantity:1
           });//pushing object to the cart created in cart.js
         }
-        console.log(cart);
+
+        //updating the cart total quantity on the amazon page
+        let cartQuantity = 0;
+        cart.forEach((item)=>{
+          cartQuantity += item.quantity;
+        });
+          //changing the cartqunatity on the page using innerHtML
+        document.querySelector('.js-cart-quantity')
+          .innerHTML = cartQuantity;
+          
       });//dataset property gives all the data attributes attached to the button
      }); //selecting all add to cart buttons and looping through them and adding eventlistner
+
+
+
+
+
+
 
 
 
