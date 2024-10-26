@@ -33,6 +33,10 @@ const products = [{
   priceCents:1899
 }]; we are using the data given which is already existed */
 
+//importing the variable from other file. in the {} we will give the name of the varible. then we will tell form which file we need t get the varible. inside the '' we will give the file path
+//filepath '' this amazon.js is inside the scripts folder so we need to get out of the scripts folder for that we are putting (..)2dots indicating folder outside the current folder and then (/) to go outisde of the scripts folder. after that we are going to go inside data folder by typing data/ and then the filename where the varible is present in
+import {cart} from '../data/cart.js';
+
 
 //combining individual strings(products) into one
 let productsHTML = ''; //each time we go through the loop we will add the html string into this string
@@ -123,7 +127,7 @@ products.forEach((product)=>{
           //changing the cartqunatity on the page using innerHtML
         document.querySelector('.js-cart-quantity')
           .innerHTML = cartQuantity;
-          
+
       });//dataset property gives all the data attributes attached to the button
      }); //selecting all add to cart buttons and looping through them and adding eventlistner
 
@@ -159,4 +163,11 @@ products.forEach((product)=>{
   Syntax: has to start with data-  then give it any name.but we shoud seperate the word with dash
     //it is not good to use product name cause we can have different items with same id soo we will use id.as id is unique for every product
  
-  */
+  MODULUES:
+    1. put all imports at the top of the file
+    2. for modulues to work we need to use live server
+
+  BENEFITS:
+    1. no naming conflicts it will arise only when we import a varible and then use same varibale in the file
+    import {cart as myCart} from '../data/cart.js'; this syntax will renmae the varible cart to myCart so we will use the myCart variable in this file
+    */

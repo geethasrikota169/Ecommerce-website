@@ -58,8 +58,20 @@
     <!--script elements are loaded one by one so the order is imp
        1st the products array is created and then amazon.js will run if these are reversed it will not work
     -->
-    <script src="data/cart.js">   </script>
+    <!--<script src="data/cart.js">   </script> //wehn we use a script tag it will run all the code inside the cart.js which create a cart variable and cause the naming conflicct if used in another file
+          cart doent exit anymore outside the file we cant acces cart from outside-->
     <script src="data/products.js">   </script>
-    <script src="scripts/amazon.js">    </script>
+    <script type="module" src="scripts/amazon.js">    </script>
+    
+    <!--big problem with using script tags is that it has naming conflicts means if a name is used in one script cannot be used in another cant create 2 objects or variables with same name in the scripts
+     it will cause error and the error cannot be identified easyly. so we are going to use modules
+     module contains a varible inside a file so this varibale doesnt cause conflicts with anything outside the file
+      to get a variable out of a file
+       1.add type="module"attribute
+       2.export
+       3.import
+       type="module" attribute lets this file get variables out of other files
+       -->
+       
   </body>
 </html>
