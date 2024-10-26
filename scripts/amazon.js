@@ -35,7 +35,7 @@ const products = [{
 
 //importing the variable from other file. in the {} we will give the name of the varible. then we will tell form which file we need t get the varible. inside the '' we will give the file path
 //filepath '' this amazon.js is inside the scripts folder so we need to get out of the scripts folder for that we are putting (..)2dots indicating folder outside the current folder and then (/) to go outisde of the scripts folder. after that we are going to go inside data folder by typing data/ and then the filename where the varible is present in
-import {cart} from '../data/cart.js';
+import {cart, addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 
 //combining individual strings(products) into one
@@ -98,38 +98,28 @@ products.forEach((product)=>{
   //console.log(productsHTML);
   document.querySelector('.js-products-grid').innerHTML=productsHTML; //replacing the innerhtml to js produced html productsHTML
 
+  
+  
+  function updateCartQuantity(){
+    //updating the cart total quantity on the amazon page
+    let cartQuantity = 0;
+    cart.forEach((cartItem)=>{
+      cartQuantity += cartItem.quantity;
+    });
+      //changing the cartqunatity on the page using innerHtML
+    document.querySelector('.js-cart-quantity')
+      .innerHTML = cartQuantity;
+  }
+
   document.querySelectorAll('.js-add-to-cart')
-     .forEach((button)=>{
+    .forEach((button)=>{
       button.addEventListener('click',()=>{
         const productId = button.dataset.productId; //accessing productname from all the datasets of the button.the name is converted form kabab case to camel case(in data-product-id , product-id to productId)
-        
-        let matchingItem;
-        cart.forEach((item)=>{
-          if(productId === item.productId){
-            matchingItem = item;
-          }
-        }); //looping through the cart to see if the item is already in the cart if yes then saving it in the matchingItem varible so that we can add its quantity 
-
-        if(matchingItem){
-          matchingItem.quantity++;
-        }else{
-          cart.push({
-            productId:productId,
-            quantity:1
-          });//pushing object to the cart created in cart.js
-        }
-
-        //updating the cart total quantity on the amazon page
-        let cartQuantity = 0;
-        cart.forEach((item)=>{
-          cartQuantity += item.quantity;
-        });
-          //changing the cartqunatity on the page using innerHtML
-        document.querySelector('.js-cart-quantity')
-          .innerHTML = cartQuantity;
-
+        //putting code into functions to make it understand easy. and putting the function addtocart in cart.js as it is good pratice to put the code releated to cart in one file and using import and export
+        addToCart(productId); 
+        updateCartQuantity();
       });//dataset property gives all the data attributes attached to the button
-     }); //selecting all add to cart buttons and looping through them and adding eventlistner
+    }); //selecting all add to cart buttons and looping through them and adding eventlistner
 
 
 
