@@ -36,7 +36,7 @@ const products = [{
 //importing the variable from other file. in the {} we will give the name of the varible. then we will tell form which file we need t get the varible. inside the '' we will give the file path
 //filepath '' this amazon.js is inside the scripts folder so we need to get out of the scripts folder for that we are putting (..)2dots indicating folder outside the current folder and then (/) to go outisde of the scripts folder. after that we are going to go inside data folder by typing data/ and then the filename where the varible is present in
 import {cart} from '../data/cart.js';
-
+import {products} from '../data/products.js';
 
 //combining individual strings(products) into one
 let productsHTML = ''; //each time we go through the loop we will add the html string into this string
