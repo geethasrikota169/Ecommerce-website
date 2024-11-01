@@ -1,5 +1,6 @@
 import {cart} from '../data/cart.js';
 import {products} from '../data/products.js'; //importing to serach the array for full product details
+import { formatCurreny } from './utils/money.js';  //..(2dots) represnts the folder outside the current folder. .(1dot)means the current folder means we are going to the current folder is scripts then we will go to utils ad locate money.js
 
 let cartSummaryHTML = ''; //each time we loop through the cart we are going to add html to this so we can combine it
 
@@ -29,7 +30,7 @@ cart.forEach((cartItem)=>{
             ${matchingProduct.name}
           </div>
           <div class="product-price">
-          $${matchingProduct.priceCents/100}
+            $${formatCurreny(matchingProduct.priceCents)}
           </div>
           <div class="product-quantity">
             <span>
@@ -51,7 +52,7 @@ cart.forEach((cartItem)=>{
           <div class="delivery-option">
             <input type="radio" checked
               class="delivery-option-input"
-              name="delivery-option-1">
+              name="delivery-option-${matchingProduct.id}">
             <div>
               <div class="delivery-option-date">
                 Tuesday, June 21
@@ -64,7 +65,7 @@ cart.forEach((cartItem)=>{
           <div class="delivery-option">
             <input type="radio"
               class="delivery-option-input"
-              name="delivery-option-1">
+              name="delivery-option-${matchingProduct.id}">
             <div>
               <div class="delivery-option-date">
                 Wednesday, June 15
@@ -77,7 +78,7 @@ cart.forEach((cartItem)=>{
           <div class="delivery-option">
             <input type="radio"
               class="delivery-option-input"
-              name="delivery-option-1">
+              name="delivery-option-${matchingProduct.id}">
             <div>
               <div class="delivery-option-date">
                 Monday, June 13
@@ -102,3 +103,9 @@ console.log(cartSummaryHTML);
 
 
 /*to create the html for checkout page using the products we are 1st looping through the cart and then we will search the for the items using id to get other details of the items like name,price.. etc */
+/* another problem is that using the html generator in the checkout page for the delivery option we are using aa type called radio. the way radioselectors work is that if a set of radio selectors have the same name then we can only select one 
+syntax for radio selector
+  <input type="radio" name="name1">
+the problem in this js is we are generating the html code for the radioselectors with the same name so we are only able to select one option in the given 6 deliveryoptions(default cartItems) t resolve this we need to assign different radio selector name for different products.
+instead of using delivery-option-1 name for everytime. each product is going to use differnt name insted of 1 we will substite with producid
+*/

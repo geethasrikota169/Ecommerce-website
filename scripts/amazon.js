@@ -37,6 +37,7 @@ const products = [{
 //filepath '' this amazon.js is inside the scripts folder so we need to get out of the scripts folder for that we are putting (..)2dots indicating folder outside the current folder and then (/) to go outisde of the scripts folder. after that we are going to go inside data folder by typing data/ and then the filename where the varible is present in
 import {cart, addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
+import { formatCurreny } from './utils/money.js';
 
 //combining individual strings(products) into one
 let productsHTML = ''; //each time we go through the loop we will add the html string into this string
@@ -63,7 +64,7 @@ products.forEach((product)=>{
       </div>
 
       <div class="product-price">
-        $${(product.priceCents/100).toFixed(2)}
+        $${formatCurreny(product.priceCents)}
       </div>
 
       <div class="product-quantity-container">
