@@ -1,7 +1,7 @@
-import {cart} from '../data/cart.js';
+import {cart,removeFromCart} from '../data/cart.js';
 import {products} from '../data/products.js'; //importing to serach the array for full product details
 import { formatCurreny } from './utils/money.js';  //..(2dots) represnts the folder outside the current folder. .(1dot)means the current folder means we are going to the current folder is scripts then we will go to utils ad locate money.js
-
+ 
 let cartSummaryHTML = ''; //each time we loop through the cart we are going to add html to this so we can combine it
 
 cart.forEach((cartItem)=>{
@@ -39,7 +39,7 @@ cart.forEach((cartItem)=>{
             <span class="update-quantity-link link-primary">
               Update
             </span>
-            <span class="delete-quantity-link link-primary">
+            <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
               Delete
             </span>
           </div>
@@ -97,7 +97,13 @@ cart.forEach((cartItem)=>{
 document.querySelector('.js-order-summary')
     .innerHTML = cartSummaryHTML;
 
-console.log(cartSummaryHTML);
+document.querySelectorAll('.js-delete-link')
+    .forEach((link)=>{
+      link.addEventListener('click',() => {
+        const productId = link.dataset.productId; 
+        removeFromCart(productId);
+      });
+    });//we are adding an eventlistner for all the delete buttons. then giving the function suhc that the product is removed from the cart and then the html is updated for that we need to know which item to delete so we are assigning an data attribute to the delete button.
 
 
 
