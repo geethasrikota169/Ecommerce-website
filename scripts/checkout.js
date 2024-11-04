@@ -16,7 +16,8 @@ cart.forEach((cartItem)=>{
   });
 
   cartSummaryHTML += `
-    <div class="cart-item-container">
+    <div class="cart-item-container 
+         js-cart-item-container-${matchingProduct.id}">
       <div class="delivery-date">
         Delivery date: Tuesday, June 21
       </div>
@@ -102,6 +103,11 @@ document.querySelectorAll('.js-delete-link')
       link.addEventListener('click',() => {
         const productId = link.dataset.productId; 
         removeFromCart(productId);
+
+        const container = document.querySelector(
+          `.js-cart-item-container-${productId}`
+        );
+        container.remove(); //every element we get with a dom has a method remove
       });
     });//we are adding an eventlistner for all the delete buttons. then giving the function suhc that the product is removed from the cart and then the html is updated for that we need to know which item to delete so we are assigning an data attribute to the delete button.
 
@@ -114,4 +120,9 @@ syntax for radio selector
   <input type="radio" name="name1">
 the problem in this js is we are generating the html code for the radioselectors with the same name so we are only able to select one option in the given 6 deliveryoptions(default cartItems) t resolve this we need to assign different radio selector name for different products.
 instead of using delivery-option-1 name for everytime. each product is going to use differnt name insted of 1 we will substite with producid
+steps to update the html on the page
+ use the dom to get the element to remove
+ use .remove() method. to remove the container for the product we will need to assign an id for each container containing products. so we will add a special class, class="js-cart-item-container-${productId}" in the cart-item-container
+ then we will target the class and remove the product to change the html on the page
+
 */
