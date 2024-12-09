@@ -11,145 +11,153 @@ const today = dayjs();
 const deliveryDate = today.add(7,'day'); //it will add 7 days to the todays date
 console.log(deliveryDate.format('dddd, MMMM D')); //inside the () we will give a string. this string tells dayjs wt kind of format we wnat
 
-let cartSummaryHTML = ''; //each time we loop through the cart we are going to add html to this so we can combine it
+//putting the whole code in a function so we can run this code everytime we update it. render means to display on the page
+function renderOrderSummary(){
 
-cart.forEach((cartItem)=>{
-  const productId = cartItem.productId; //getting productid out of the cart
-  
-  let matchingProduct; //variable to save the results of matching products
+  let cartSummaryHTML = ''; //each time we loop through the cart we are going to add html to this so we can combine it
 
-  products.forEach((product)=>{
-    if (product.id === productId){
-      matchingProduct = product;
-    }
-  });
+  cart.forEach((cartItem)=>{
+    const productId = cartItem.productId; //getting productid out of the cart
+    
+    let matchingProduct; //variable to save the results of matching products
 
-  //getting delivery option id out of the cart into a variable
-  const deliveryOptionId = cartItem.deliveryOptionId;
-  let deliveryOption;
-  deliveryOptions.forEach((option)=>{
-    if(option.id === deliveryOptionId){
-      deliveryOption = option;
-    }
-  });
+    products.forEach((product)=>{
+      if (product.id === productId){
+        matchingProduct = product;
+      }
+    });
 
-  const today = dayjs();
-  const deliveryDate = today.add(
-    deliveryOption.deliveryDays,'days'
-  );
-  const dateString = deliveryDate.format(
-    'dddd, MMMM D'
-  );
+    //getting delivery option id out of the cart into a variable
+    const deliveryOptionId = cartItem.deliveryOptionId;
+    let deliveryOption;
+    deliveryOptions.forEach((option)=>{
+      if(option.id === deliveryOptionId){
+        deliveryOption = option;
+      }
+    });
 
-  cartSummaryHTML += `
-    <div class="cart-item-container 
-         js-cart-item-container-${matchingProduct.id}">
-      <div class="delivery-date">
-        Delivery date: ${dateString}
-      </div>
-
-      <div class="cart-item-details-grid">
-        <img class="product-image"
-          src="${matchingProduct.image}">
-
-        <div class="cart-item-details">
-          <div class="product-name">
-            ${matchingProduct.name}
-          </div>
-          <div class="product-price">
-            $${formatCurreny(matchingProduct.priceCents)}
-          </div>
-          <div class="product-quantity">
-            <span>
-              Quantity: <span class="quantity-label">${cartItem.quantity}</span>
-            </span>
-            <span class="update-quantity-link link-primary">
-              Update
-            </span>
-            <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
-              Delete
-            </span>
-          </div>
-        </div>
-
-        <div class="delivery-options">
-          <div class="delivery-options-title">
-            Choose a delivery option:
-          </div>
-          ${deliveryOptionsHTML(matchingProduct,cartItem)}
-        </div>
-      </div>
-    </div>
-    `;
-});//foreach cartitem we will generate html
-
-//function for generating html using js for delivery-optins
-function deliveryOptionsHTML(matchingProduct,cartItem){
-  let html = '';
-
-  deliveryOptions.forEach((deliveryOption)=>{
-    const today = dayjs(); //getting today's date using dayjs function
+    const today = dayjs();
     const deliveryDate = today.add(
       deliveryOption.deliveryDays,'days'
     );
     const dateString = deliveryDate.format(
       'dddd, MMMM D'
-    ); //changing into easy to read format
+    );
 
-    const priceString = deliveryOption.priceCents
-     === 0 
-     ? 'FREE'
-     : `$${formatCurreny(deliveryOption.priceCents)} -`;
+    cartSummaryHTML += `
+      <div class="cart-item-container 
+          js-cart-item-container-${matchingProduct.id}">
+        <div class="delivery-date">
+          Delivery date: ${dateString}
+        </div>
 
-     //for which option to be checked
-     const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
-    
-     html += `
-      <div class="delivery-option js-delivery-option"
-      data-product-id="${matchingProduct.id}"
-      data-delivery-option-id="${deliveryOption.id}"> 
-        <input type="radio"
-        ${isChecked ?'checked' :''} 
-          class="delivery-option-input"
-          name="delivery-option-${matchingProduct.id}">
-        <div>
-          <div class="delivery-option-date">
-            ${dateString}
+        <div class="cart-item-details-grid">
+          <img class="product-image"
+            src="${matchingProduct.image}">
+
+          <div class="cart-item-details">
+            <div class="product-name">
+              ${matchingProduct.name}
+            </div>
+            <div class="product-price">
+              $${formatCurreny(matchingProduct.priceCents)}
+            </div>
+            <div class="product-quantity">
+              <span>
+                Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+              </span>
+              <span class="update-quantity-link link-primary">
+                Update
+              </span>
+              <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
+                Delete
+              </span>
+            </div>
           </div>
-          <div class="delivery-option-price">
-            ${priceString} Shipping
+
+          <div class="delivery-options">
+            <div class="delivery-options-title">
+              Choose a delivery option:
+            </div>
+            ${deliveryOptionsHTML(matchingProduct,cartItem)}
           </div>
         </div>
       </div>
-    `
-    //${isChecked ?'checked' :''}  is used to check the option
-  });
-  return html;
+      `;
+  });//foreach cartitem we will generate html
+
+  //function for generating html using js for delivery-optins
+  function deliveryOptionsHTML(matchingProduct,cartItem){
+    let html = '';
+
+    deliveryOptions.forEach((deliveryOption)=>{
+      const today = dayjs(); //getting today's date using dayjs function
+      const deliveryDate = today.add(
+        deliveryOption.deliveryDays,'days'
+      );
+      const dateString = deliveryDate.format(
+        'dddd, MMMM D'
+      ); //changing into easy to read format
+
+      const priceString = deliveryOption.priceCents
+      === 0 
+      ? 'FREE'
+      : `$${formatCurreny(deliveryOption.priceCents)} -`;
+
+      //for which option to be checked
+      const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
+      
+      html += `
+        <div class="delivery-option js-delivery-option"
+        data-product-id="${matchingProduct.id}"
+        data-delivery-option-id="${deliveryOption.id}"> 
+          <input type="radio"
+          ${isChecked ?'checked' :''} 
+            class="delivery-option-input"
+            name="delivery-option-${matchingProduct.id}">
+          <div>
+            <div class="delivery-option-date">
+              ${dateString}
+            </div>
+            <div class="delivery-option-price">
+              ${priceString} Shipping
+            </div>
+          </div>
+        </div>
+      `
+      //${isChecked ?'checked' :''}  is used to check the option
+    });
+    return html;
+  }
+
+  document.querySelector('.js-order-summary')
+      .innerHTML = cartSummaryHTML;
+
+  document.querySelectorAll('.js-delete-link')
+      .forEach((link)=>{
+        link.addEventListener('click',() => {
+          const productId = link.dataset.productId; 
+          removeFromCart(productId);
+
+          const container = document.querySelector(
+            `.js-cart-item-container-${productId}`
+          );
+          container.remove(); //every element we get with a dom has a method remove
+        });
+      });//we are adding an eventlistner for all the delete buttons. then giving the function suhc that the product is removed from the cart and then the html is updated for that we need to know which item to delete so we are assigning an data attribute to the delete button.
+
+  document.querySelectorAll('.js-delivery-option')
+    .forEach((element)=>{
+      element.addEventListener('click',()=>{
+        const {productId,deliveryOptionId} = element.dataset;
+        updateDeliveryOption(productId,deliveryOptionId);
+        renderOrderSummary(); //we can call the function to update the date in the delivery date section automatically instead of using dom
+      });
+    });
+
 }
 
-document.querySelector('.js-order-summary')
-    .innerHTML = cartSummaryHTML;
-
-document.querySelectorAll('.js-delete-link')
-    .forEach((link)=>{
-      link.addEventListener('click',() => {
-        const productId = link.dataset.productId; 
-        removeFromCart(productId);
-
-        const container = document.querySelector(
-          `.js-cart-item-container-${productId}`
-        );
-        container.remove(); //every element we get with a dom has a method remove
-      });
-    });//we are adding an eventlistner for all the delete buttons. then giving the function suhc that the product is removed from the cart and then the html is updated for that we need to know which item to delete so we are assigning an data attribute to the delete button.
-
-document.querySelectorAll('.js-delivery-option')
-   .forEach((element)=>{
-    element.addEventListener('click',()=>{
-      const {productId,deliveryOptionId} = element.dataset;
-      updateDeliveryOption(productId,deliveryOptionId);
-    });
-   });
+renderOrderSummary();
 
 
 /*to create the html for checkout page using the products we are 1st looping through the cart and then we will search the for the items using id to get other details of the items like name,price.. etc */
@@ -189,4 +197,6 @@ const {productId,deliveryOptionId} =element.dataset; this is a shorthand propert
 const productId=element.dataset.productId;
 const deliveryOptionId=element.dataset.deliveryOptionId;
 
+when updating the deliverydate and the prices we need to reload the whole page and rerun the the btml so we are putting the whole above html in a function so that we can rerun it everytime we update the page
+instead of using the dom and changing the html directly one by one for  date and prices we update the data and regenerate all the html using the function renderOrderSummary
 */
