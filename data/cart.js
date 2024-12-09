@@ -6,10 +6,12 @@ export let cart = JSON.parse(localStorage.getItem('cart'));//it takes one string
 if(!cart){//if cart is empty
   cart = [{
     productId:'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-    quantity:2
+    quantity:2,
+    deliveryOptionId:'1'
   },{
     productId:'15b6fc6f-327a-4ec4-896f-486349e85a3d',
-    quantity:1
+    quantity:1,
+    deliveryOptionId:'2'
   }]; 
 }//when we 1st use the website we might not have a cart in local storage and local storgae will give null so we are giving a default value
 
@@ -32,7 +34,8 @@ export function addToCart(productId){
   }else{
     cart.push({
       productId:productId,
-      quantity:1
+      quantity:1,
+      deliveryOptionId:'1' //for new products default delivery option 1
     });//pushing object to the cart created in cart.js
   }
   saveToStorage();//whenever we update the cart we need to save it to local storage
@@ -70,4 +73,7 @@ local storage can only store strings. and setitem takes 2 strings 1 is the name 
  it can only save string so we will convert it into string then save it.we can convert anything into string using JSON.stringify
 whenever we update the cart we need to save it to local storage so doesnt get reset when we update the cart
 JSON.parse it is used to convert the string back to array or previously determined data type 
+
+localStorage.removeItem('cart') -- when we type this in console we can remove the cart from local storage and refresh the page so that we can reset the default values.
+localStorage.clear() --will remove all data in local storage and refresh the page.
 */

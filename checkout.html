@@ -84,6 +84,24 @@
       </div>
     </div>
   
+  <!-- intsead using script tags as they can create nameconflicts we will ise esm version to upload external librabries
+   <script src="https://unpkg.com/supersimpledev@1.0.1/hello.js"></script> 
+   <script src="https://unpkg.com/dayjs@1.11.10/dayjs.min.js"></script> --> <!--this will take all the code that is located on the page andload it into our project.it creates a function dayjs()-->
+
+   <!-- better way to load external libraries is using javascript modules 
+    to use external librabries and modules together we use a special verison of library called ESM Version-->
+
   <script type="module" src="scripts/checkout.js"> </script>
   </body>
 </html>
+
+<!-- 
+Extenal library : it is code that is outside of our project. we can load an external library by using a script tag and in src we put the url of the website in which js code is there
+we are going to use dayjs external library to work with dates for the delivery dates
+to use dayjs.  the dayjs documentation page will show us how to use.which can be found in goggle by searching dayjs documentation or ask chatgpt
+to calculate deliverydate --=> 1st we need to get todays date by using the var char = dayjs() it also has a add method. .format() method will display the date in a easy-to-read format
+
+ESM version 
+ESM=EcmaScript module ecmascript is another name of javascript
+ESM verison of a library is just a version that works with javascript modules
+ -->
