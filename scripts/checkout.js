@@ -1,4 +1,4 @@
-import {cart,removeFromCart} from '../data/cart.js';
+import {cart,removeFromCart,updateDeliveryOption} from '../data/cart.js';
 import {products} from '../data/products.js'; //importing to serach the array for full product details
 import  formatCurreny from './utils/money.js';  //..(2dots) represnts the folder outside the current folder. .(1dot)means the current folder means we are going to the current folder is scripts then we will go to utils ad locate money.js
 import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';  //importing esm version of a hello function external library. instead of path we will give url of the page
@@ -103,8 +103,11 @@ function deliveryOptionsHTML(matchingProduct,cartItem){
 
      //for which option to be checked
      const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
-    html += `
-      <div class="delivery-option"> 
+    
+     html += `
+      <div class="delivery-option js-delivery-option"
+      data-product-id="${matchingProduct.id}"
+      data-delivery-option-id="${deliveryOption.id}"> 
         <input type="radio"
         ${isChecked ?'checked' :''} 
           class="delivery-option-input"
@@ -140,7 +143,13 @@ document.querySelectorAll('.js-delete-link')
       });
     });//we are adding an eventlistner for all the delete buttons. then giving the function suhc that the product is removed from the cart and then the html is updated for that we need to know which item to delete so we are assigning an data attribute to the delete button.
 
-
+document.querySelectorAll('.js-delivery-option')
+   .forEach((element)=>{
+    element.addEventListener('click',()=>{
+      const {productId,deliveryOptionId} = element.dataset;
+      updateDeliveryOption(productId,deliveryOptionId);
+    });
+   });
 
 
 /*to create the html for checkout page using the products we are 1st looping through the cart and then we will search the for the items using id to get other details of the items like name,price.. etc */
@@ -174,5 +183,10 @@ dayj has an add method to add the number of days
 deliveryDate = today.add(
       deliveryOption.deliveryDays,'days'
     ); here deliveryOption.deliverydays is the 1st parameter that is how many days to add. 2nd parameter we will give the length of time we want to add which is a string 'days'
+
+
+const {productId,deliveryOptionId} =element.dataset; this is a shorthand property of
+const productId=element.dataset.productId;
+const deliveryOptionId=element.dataset.deliveryOptionId;
 
 */
