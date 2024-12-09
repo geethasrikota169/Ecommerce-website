@@ -1,9 +1,10 @@
 //this file is going to contain utilities that are related to money
 //now we are going to share this function formatCurrency between checkout.js and amazon.js
 
-export function formatCurreny(priceCents){
-  return (priceCents/100).toFixed(2);
+export function formatCurrency(priceCents){
+  return (Math.round(priceCents)/100).toFixed(2);
 }
+//tofixed has an issue it doesnt roundoff .0005 type issues. so we will round the pricecents 1st
 
-export default formatCurreny;
-//now when importing formatCurreny no need to use {}
+export default formatCurrency;
+//now when importing formatCurrency no need to use {}

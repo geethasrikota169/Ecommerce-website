@@ -1,9 +1,10 @@
 import {cart,removeFromCart,updateDeliveryOption} from '../../data/cart.js';
-import {products} from '../../data/products.js'; //importing to serach the array for full product details
-import  formatCurreny from '../utils/money.js';  //..(2dots) represnts the folder outside the current folder. .(1dot)means the current folder means we are going to the current folder is scripts then we will go to utils ad locate money.js
+import {products,getProduct} from '../../data/products.js'; //importing to serach the array for full product details
+import  formatCurrency from '../utils/money.js';  //..(2dots) represnts the folder outside the current folder. .(1dot)means the current folder means we are going to the current folder is scripts then we will go to utils ad locate money.js
 import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';  //importing esm version of a hello function external library. instead of path we will give url of the page
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';  //import from dayjs esm verison
-import {deliveryOptions} from '../../data/deliveryOptions.js';
+import {deliveryOptions,getDeliveryOption} from '../../data/deliveryOptions.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 
 
 hello();
@@ -19,22 +20,11 @@ export function renderOrderSummary(){
   cart.forEach((cartItem)=>{
     const productId = cartItem.productId; //getting productid out of the cart
     
-    let matchingProduct; //variable to save the results of matching products
-
-    products.forEach((product)=>{
-      if (product.id === productId){
-        matchingProduct = product;
-      }
-    });
+    const matchingProduct = getProduct(productId);
 
     //getting delivery option id out of the cart into a variable
     const deliveryOptionId = cartItem.deliveryOptionId;
-    let deliveryOption;
-    deliveryOptions.forEach((option)=>{
-      if(option.id === deliveryOptionId){
-        deliveryOption = option;
-      }
-    });
+    const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     const today = dayjs();
     const deliveryDate = today.add(
@@ -60,7 +50,7 @@ export function renderOrderSummary(){
               ${matchingProduct.name}
             </div>
             <div class="product-price">
-              $${formatCurreny(matchingProduct.priceCents)}
+              $${formatCurrency(matchingProduct.priceCents)}
             </div>
             <div class="product-quantity">
               <span>
@@ -102,7 +92,7 @@ export function renderOrderSummary(){
       const priceString = deliveryOption.priceCents
       === 0 
       ? 'FREE'
-      : `$${formatCurreny(deliveryOption.priceCents)} -`;
+      : `$${formatCurrency(deliveryOption.priceCents)} -`;
 
       //for which option to be checked
       const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
@@ -152,6 +142,7 @@ export function renderOrderSummary(){
         const {productId,deliveryOptionId} = element.dataset;
         updateDeliveryOption(productId,deliveryOptionId);
         renderOrderSummary(); //we can call the function to update the date in the delivery date section automatically instead of using dom
+        renderPaymentSummary();
       });
     });
 
