@@ -7,11 +7,6 @@ import {deliveryOptions,getDeliveryOption} from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 
 
-hello();
-const today = dayjs();
-const deliveryDate = today.add(7,'day'); //it will add 7 days to the todays date
-console.log(deliveryDate.format('dddd, MMMM D')); //inside the () we will give a string. this string tells dayjs wt kind of format we wnat
-
 //putting the whole code in a function so we can run this code everytime we update it. render means to display on the page
 export function renderOrderSummary(){
 
@@ -133,6 +128,8 @@ export function renderOrderSummary(){
             `.js-cart-item-container-${productId}`
           );
           container.remove(); //every element we get with a dom has a method remove
+        
+          renderPaymentSummary();
         });
       });//we are adding an eventlistner for all the delete buttons. then giving the function suhc that the product is removed from the cart and then the html is updated for that we need to know which item to delete so we are assigning an data attribute to the delete button.
 
@@ -182,6 +179,10 @@ deliveryDate = today.add(
       deliveryOption.deliveryDays,'days'
     ); here deliveryOption.deliverydays is the 1st parameter that is how many days to add. 2nd parameter we will give the length of time we want to add which is a string 'days'
 
+hello();
+const today = dayjs();
+const deliveryDate = today.add(7,'day'); //it will add 7 days to the todays date
+console.log(deliveryDate.format('dddd, MMMM D')); //inside the () we will give a string. this string tells dayjs wt kind of format we wnat
 
 const {productId,deliveryOptionId} =element.dataset; this is a shorthand property of
 const productId=element.dataset.productId;
