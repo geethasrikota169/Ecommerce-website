@@ -1,9 +1,13 @@
 import { products } from "../data/products.js";
 
 //we need to get the cart from the local storage instea using the default value
-export let cart = JSON.parse(localStorage.getItem('cart'));//it takes one string that is the name of wt we saved early
+export let cart ;
 
-if(!cart){//if cart is empty
+loadFromStorage();
+
+export function loadFromStorage(){
+  cart = JSON.parse(localStorage.getItem('cart'));
+if(!cart){ //if cart is empty
   cart = [{
     productId:'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
     quantity:2,
@@ -13,8 +17,8 @@ if(!cart){//if cart is empty
     quantity:1,
     deliveryOptionId:'2'
   }]; 
-}//when we 1st use the website we might not have a cart in local storage and local storgae will give null so we are giving a default value
-
+}
+}
 
 //function to save the cart to local storage
 function saveToStorage(){
