@@ -1,5 +1,5 @@
 //code for automated test for formatcurrency function
-import {formatCurrency} from '../scripts/utils/money.js';
+import {formatCurrency} from '../../scripts/utils/money.js';
 
 //name for the group of tests releated (also called test suite)
 console.log('test suite: formatCurrency')
