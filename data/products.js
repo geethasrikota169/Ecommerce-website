@@ -59,6 +59,11 @@ class Clothing extends Product{
 
 }// adding specific properties for child Clothing
 
+/* BuiltIn classes example
+const date = new Date();
+console.log(date);
+console.log(date.toLocaleTimeString());
+*/
 
 //converting all products from regular objects into product class. all products in the array are in class
 export const products = [
@@ -752,5 +757,39 @@ when a child has same method as parent but different code init the method in chi
 here in the above products class we have a method extraInfoHTML and we have that method in its child class Clothing. the extraInfoHTmL method in product class will be overrided in clothing class and run the code inside method in clothig class
 if we need to access parents method we can use super. super will give access to parents class
 
+
+Built In Classes:
+the classes that are provided by the language
+example new Date() = generates an object that represents the current date
+Date class has a method called .toLocalTimeString()=gives the current time
+
+"this" lets an object access its own properties.
+console.log(this); //returns undefined as it is not inside any class
+using "this" in object creation
+const object2={
+  a:2,
+  b:this.a  //here this "this" = undefined as object2 has not been created yet
+};
+this can be used in a function
+function logThis(){
+  console.log(this); // here also this=undefined
+}
+logThis(); 
+inside a function, we can change "this" to whatever we want. to do that functions have a method call call()
+logThis.call('hello'); //it will run the function it will do the same thing as logThis() except we can set the value of "this" to whatever we want 
+here 1st parameter for call is value of "this".
+function logThis(param1,param2){
+  console.log(this);
+}
+logThis.call('hello',param1,param2);
+
+arrow function donot change the value of "this"
+//creating method using arrow function
+this (here this value is undefined so inside the method also undefined)
+const object3 = {
+  method: ()=>{
+     console.log(this); //"this" is undefined here
+    }
+}; //"this" keeps the value that it had outside the arrow function
 */
 
