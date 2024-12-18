@@ -34,8 +34,30 @@ class Product{  //properties we want to generate each object
   getPrice(){
     return  `$${formatCurrency(this.priceCents)}`;
   }
+
+  extraInfoHTML(){
+    return '';
+  }// if extraInfoHTML method is not present for normal products then it will show error in amzon.js when we call product.extraInfo so we are defining the method here and returning empty string
 }
 
+class Clothing extends Product{
+  sizeChartLink;
+
+  constructor(productDetails){
+    super(productDetails); //calls the constructor of parent class and initializes the properties
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }//we need to initialize the inherted properties also for that we chave a short cut by using the constructor of parent class
+
+  extraInfoHTML(){
+    //super.extraInfoHTML(); //this calls one of the methods of parent as specified
+    return `
+    <a href="${this.sizeChartLink}" target="_blank"> 
+      Size cart
+    </a>
+    `;
+  }
+
+}// adding specific properties for child Clothing
 
 
 //converting all products from regular objects into product class. all products in the array are in class
@@ -699,6 +721,9 @@ export const products = [
     ]
   }
 ].map((productDetails)=>{
+  if(productDetails.type === 'clothing'){
+    return new Clothing(productDetails);
+  }
   return new Product(productDetails);
 
 });  //here using map we will loop through the porducts array anad convert each object into  class by using this function
@@ -710,4 +735,22 @@ export const products = [
 .map() creates a new array whatever we return from the inner function will go inside the new array
 map takes each value in a array run a function on it transform it and puts in a new array
 
+Inheritance
+inheritance = lets us reuse code between classes
+//inheritance will inhert all properties and method from parent to child. extend keyword
+inheritance is used when one class is more specific type of another class
+super(parameters of constructor); in a child class constructor  will calls the constructor of the parent class (parent) and initializes the parent properties.
+
+if in child class we dont define a constructor it will by default run the parents constructor
+
+<a href="${this.sizeChartLink}" target="_blank"> 
+      Size cart
+</a> // this ia a link tag when we click on the sizechart it will open the link in href. and target ="_blank" will tell the link to open in a new tab
+
+Method Overriding:
+when a child has same method as parent but different code init the method in child class will override/replace the parents method
+here in the above products class we have a method extraInfoHTML and we have that method in its child class Clothing. the extraInfoHTmL method in product class will be overrided in clothing class and run the code inside method in clothig class
+if we need to access parents method we can use super. super will give access to parents class
+
 */
+
