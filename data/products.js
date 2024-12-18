@@ -1,3 +1,5 @@
+import formatCurrency from '../scripts/utils/money.js';
+
 export function getProduct(productId){
   let matchingProduct; //variable to save the results of matching products
 
@@ -9,6 +11,34 @@ export function getProduct(productId){
     return matchingProduct;
 }
 
+//converting an object into a class. instead of using regular objects in this array we are going to use a class to generate this objects
+class Product{  //properties we want to generate each object
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+
+  constructor(productDetails){
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+
+  }
+
+  getStarsUrl(){
+    return  `images/ratings/rating-${this.rating.stars*10}.png`;
+  }
+  getPrice(){
+    return  `$${formatCurrency(this.priceCents)}`;
+  }
+}
+
+
+
+//converting all products from regular objects into product class. all products in the array are in class
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -668,4 +698,16 @@ export const products = [
       "mens"
     ]
   }
-];
+].map((productDetails)=>{
+  return new Product(productDetails);
+
+});  //here using map we will loop through the porducts array anad convert each object into  class by using this function
+
+
+
+/*
+// map() it is a method of array . this method will loop through an array. and for each value it will runs a function.
+.map() creates a new array whatever we return from the inner function will go inside the new array
+map takes each value in a array run a function on it transform it and puts in a new array
+
+*/
