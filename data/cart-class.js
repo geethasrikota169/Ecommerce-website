@@ -1,15 +1,15 @@
 class Cart { //naming convention has to use PascalCase for name of class
   cartItems; //same as cartItems = undefined;
-  localStorageKey;
+  #localStorageKey;  //making this property private by adding #infornt
 
   //creating a constructor
   constructor(localStorageKey){ //constructor method works like a normal method it will run the code inside it.special thing about it is when we generate an object it will run the constructor method automatically
-    this.localStorageKey = localStorageKey; 
-    this.loadFromStorage();
+    this.#localStorageKey = localStorageKey;  //when accessing localstoragekey inside the class need to use #. here the localstoragekey that is on the right is an parameter that is saved in a private property called localStorageKey which will be further used inside class
+    this.#loadFromStorage();  //as loadFromStorage is a private method to access it we need to put # infornt of the name
   }//"this" points to the object we generate
 
-  loadFromStorage(){
-    this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));  
+  #loadFromStorage(){ //making loadFromStorage method private so that it will not be accessed from outside
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));  
 
     if(!this.cartItems){ 
       this.cartItems = [{
@@ -25,7 +25,7 @@ class Cart { //naming convention has to use PascalCase for name of class
   }
   
   saveToStorage(){  
-    localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey,JSON.stringify(this.cartItems));
   }
 
   addToCart(productId){
@@ -92,6 +92,19 @@ console.log(businessCart);
 
 console.log(businessCart instanceof Cart); //returns true
 
+//now this will be problem to change and mess up the localstoragekey so we will make the localStorage key as private so that it cannot be accessed outside the class
+//cart.#localStorageKey = 'aaa'; //this will show as error as it is a private property and cannot be used outside the class
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 oop = organizing our code into objects
@@ -118,5 +131,15 @@ a constructor lets us put this setup code inside the class this makes our code c
 //constructor method works like a normal method it will run the code inside it.special thing about it is when we generate an object it will run the constructor method automatically
 1.method has to be names constructor
 2.should not return anything from a constructor
+
+field = property
+
+PRIVATE METHOD:
+private=it can only be accessed inside the class
+to make a property private add # infornt of the property and when we access it add # infront of the name
+
+private methods are also there
+a method that is private can only be used inside the class and cannot access it or call it from outside the class
+to make a method private add the # infront of the method and update the values which use private method by puttig # infront the nmae
 
  */
