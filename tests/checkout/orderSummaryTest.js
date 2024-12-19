@@ -1,6 +1,6 @@
 import { renderOrderSummary } from '../../scripts/checkout/orderSummary.js';
 import {loadFromStorage,cart } from '../../data/cart.js';
-
+import { loadProducts } from '../../data/products.js';
 
 
 describe('test suite: renderOrderSummary',() =>{ 
@@ -9,6 +9,13 @@ describe('test suite: renderOrderSummary',() =>{
   const productId1='e43638ce-6aa0-4b85-b27f-e1d07eb678c6';
   const productId2='15b6fc6f-327a-4ec4-896f-486349e85a3d';
   
+  beforeAll((done)=>{
+    loadProducts(()=>{
+      done();
+    }); //once the products are completed loading it will run the done function
+    
+  });
+
   beforeEach(()=>{
     //in this we can write our setup code
     //mocking localStorage as we are using function saveTotstorage in order to delete a item(orderSummary->removeFromCart->saveToStorage)
@@ -90,4 +97,11 @@ document.querySelector(`.js-delete-link-${productId1}`).click();    //clicking t
  
 hooks lets us share the same code betwen 2 or more tests(it)
 
+
+  beforeAll(()=>{
+    loadProducts();
+  });
+  //this doesnt work as this is only sending requesting and not waiting for the response and executinh remaning works.for it to wait for response jasmie has a feature
+  it is done() function. so in beforeAll we can give a parameter done. when we add this done paramter beforeAll will not automatically goes to the next step. it will only and only goes to the next step when we call the done function
+  if we dont call done then beforeAll will keep waiting forever. done() lets us control when to go to the next step
 */
