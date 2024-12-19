@@ -36,95 +36,100 @@ const products = [{
 //importing the variable from other file. in the {} we will give the name of the varible. then we will tell form which file we need t get the varible. inside the '' we will give the file path
 //filepath '' this amazon.js is inside the scripts folder so we need to get out of the scripts folder for that we are putting (..)2dots indicating folder outside the current folder and then (/) to go outisde of the scripts folder. after that we are going to go inside data folder by typing data/ and then the filename where the varible is present in
 import {cart, addToCart} from '../data/cart.js';
-import {products} from '../data/products.js';
+import {products,loadProducts} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
-//combining individual strings(products) into one
-let productsHTML = ''; //each time we go through the loop we will add the html string into this string
 
-//generating html using js and data without adding html manually for every product
-products.forEach((product)=>{
-  productsHTML += `
-    <div class="product-container">
-      <div class="product-image-container">
-        <img class="product-image"
-          src="${product.image}">
-      </div>
+loadProducts(renderProductsGrid); //we will still cant see the products in the page as the loadProducts will send an request to the backend and it will take sometime to arrive. to resolve the issue we need to run all the code in amazon.js in a eventListner so that it will run it after the resquest is loaded
 
-      <div class="product-name limit-text-to-2-lines">
-        ${product.name}
-      </div>
+//function to store all the code so that we can put it in eventlistner
+function renderProductsGrid(){
 
-      <div class="product-rating-container">
-        <img class="product-rating-stars"
-          src="${product.getStarsUrl()}">
-        <div class="product-rating-count link-primary">
-          ${product.rating.count}
+  //combining individual strings(products) into one
+  let productsHTML = ''; //each time we go through the loop we will add the html string into this string
+
+  //generating html using js and data without adding html manually for every product
+  products.forEach((product)=>{
+    productsHTML += `
+      <div class="product-container">
+        <div class="product-image-container">
+          <img class="product-image"
+            src="${product.image}">
         </div>
+
+        <div class="product-name limit-text-to-2-lines">
+          ${product.name}
+        </div>
+
+        <div class="product-rating-container">
+          <img class="product-rating-stars"
+            src="${product.getStarsUrl()}">
+          <div class="product-rating-count link-primary">
+            ${product.rating.count}
+          </div>
+        </div>
+
+        <div class="product-price">
+        ${product.getPrice()}
+        </div>
+
+        <div class="product-quantity-container">
+          <select>
+            <option selected value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        
+        ${product.extraInfoHTML()}
+
+        <div class="product-spacer"></div>
+
+        <div class="added-to-cart">
+          <img src="images/icons/checkmark.png">
+          Added
+        </div>
+
+        <button class="add-to-cart-button button-primary js-add-to-cart"
+        data-product-id="${product.id}"> 
+          Add to Cart
+        </button>
       </div>
+    `;
+  });
+    //console.log(productsHTML);
+    document.querySelector('.js-products-grid').innerHTML=productsHTML; //replacing the innerhtml to js produced html productsHTML
 
-      <div class="product-price">
-      ${product.getPrice()}
-      </div>
+    
+    
+    function updateCartQuantity(){
+      //updating the cart total quantity on the amazon page
+      let cartQuantity = 0;
+      cart.forEach((cartItem)=>{
+        cartQuantity += cartItem.quantity;
+      });
+        //changing the cartqunatity on the page using innerHtML
+      document.querySelector('.js-cart-quantity')
+        .innerHTML = cartQuantity;
+    }
 
-      <div class="product-quantity-container">
-        <select>
-          <option selected value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      
-      ${product.extraInfoHTML()}
-
-      <div class="product-spacer"></div>
-
-      <div class="added-to-cart">
-        <img src="images/icons/checkmark.png">
-        Added
-      </div>
-
-      <button class="add-to-cart-button button-primary js-add-to-cart"
-      data-product-id="${product.id}"> 
-        Add to Cart
-      </button>
-    </div>
-  `;
-});
-  //console.log(productsHTML);
-  document.querySelector('.js-products-grid').innerHTML=productsHTML; //replacing the innerhtml to js produced html productsHTML
-
-  
-  
-  function updateCartQuantity(){
-    //updating the cart total quantity on the amazon page
-    let cartQuantity = 0;
-    cart.forEach((cartItem)=>{
-      cartQuantity += cartItem.quantity;
-    });
-      //changing the cartqunatity on the page using innerHtML
-    document.querySelector('.js-cart-quantity')
-      .innerHTML = cartQuantity;
-  }
-
-  document.querySelectorAll('.js-add-to-cart')
-    .forEach((button)=>{
-      button.addEventListener('click',()=>{
-        const productId = button.dataset.productId; //accessing productname from all the datasets of the button.the name is converted form kabab case to camel case(in data-product-id , product-id to productId)
-        //putting code into functions to make it understand easy. and putting the function addtocart in cart.js as it is good pratice to put the code releated to cart in one file and using import and export
-        addToCart(productId); 
-        updateCartQuantity();
-      });//dataset property gives all the data attributes attached to the button
-    }); //selecting all add to cart buttons and looping through them and adding eventlistner
-
-
+    document.querySelectorAll('.js-add-to-cart')
+      .forEach((button)=>{
+        button.addEventListener('click',()=>{
+          const productId = button.dataset.productId; //accessing productname from all the datasets of the button.the name is converted form kabab case to camel case(in data-product-id , product-id to productId)
+          //putting code into functions to make it understand easy. and putting the function addtocart in cart.js as it is good pratice to put the code releated to cart in one file and using import and export
+          addToCart(productId); 
+          updateCartQuantity();
+        });//dataset property gives all the data attributes attached to the button
+      }); //selecting all add to cart buttons and looping through them and adding eventlistner
+}
 
 
 
@@ -163,4 +168,8 @@ products.forEach((product)=>{
   BENEFITS:
     1. no naming conflicts it will arise only when we import a varible and then use same varibale in the file
     import {cart as myCart} from '../data/cart.js'; this syntax will renmae the varible cart to myCart so we will use the myCart variable in this file
-    */
+    
+in javascript functions are values and we can use them as parameters    
+    
+    
+ */

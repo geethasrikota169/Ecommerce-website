@@ -65,6 +65,39 @@ console.log(date);
 console.log(date.toLocaleTimeString());
 */
 
+//loading products from the backend
+export let products =[];
+
+export function loadProducts(fun){
+  const xhr =  new XMLHttpRequest();
+
+  xhr.addEventListener('load',() => {
+    products = JSON.parse(xhr.response).map((productDetails)=>{
+      if(productDetails.type === 'clothing'){
+        return new Clothing(productDetails);
+      }
+      return new Product(productDetails);
+    
+    });  //JSON.parse to convert it back to js array. and converting teh objects into this classes
+   console.log('load products');
+
+   fun(); //running the code in amazon.js by calling the function
+
+  });//the request will give an response of products list in JSON. need to convert it back into a javascript object or inthis case an javascript array.
+
+  xhr.open('GET','https://supersimplebackend.dev/products')
+  xhr.send(); //it only send the request doesnt wait for the response to come back for that we are using eventlistner
+}
+
+
+
+
+
+
+
+
+
+/*
 //converting all products from regular objects into product class. all products in the array are in class
 export const products = [
   {
@@ -732,7 +765,7 @@ export const products = [
   return new Product(productDetails);
 
 });  //here using map we will loop through the porducts array anad convert each object into  class by using this function
-
+*/
 
 
 /*
@@ -791,5 +824,9 @@ const object3 = {
      console.log(this); //"this" is undefined here
     }
 }; //"this" keeps the value that it had outside the arrow function
+
+
+the function (fun) we are giving to loadProducts is called a callback. callback - a function to run in the future
+
 */
 
