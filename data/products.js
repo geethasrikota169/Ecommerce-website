@@ -65,6 +65,32 @@ console.log(date);
 console.log(date.toLocaleTimeString());
 */
 
+//loading products using fetch
+export function loadProductsFetch(){
+  const promise = fetch(
+    'https://supersimplebackend.dev/products'
+    ).then((response)=>{
+    return response.json(); //this will give the data attached to the response
+  }).then((productsData)=>{
+    products = productsData.map((productDetails)=>{
+      if(productDetails.type === 'clothing'){ //converting objects to classes
+        return new Clothing(productDetails);
+      }
+      return new Product(productDetails);
+    
+    }); 
+   console.log('load products');
+  }); //this will send an request to the backend.this single line is same as below request using XMLHTTP...
+
+  return promise; //to add more steps after the Promise we are saving the Promise in an variable promise and returning it. this way we can attach nextstep when calling the function
+}
+/*
+loadProductsFetch().then(()=>{
+  console.log('next step');
+}); //this attaches next step to the loadProductsFetch promise
+*/
+
+
 //loading products from the backend
 export let products =[];
 
@@ -827,6 +853,18 @@ const object3 = {
 
 
 the function (fun) we are giving to loadProducts is called a callback. callback - a function to run in the future
+
+
+.fetch() is a better way to make http request. fetch is an easy way of sending request.in fetch we dont need to specify GET it will automatically make an GET request we just need to give an url.
+fetch uses a promise
+fetch('https://supersimplebackend.dev/products').then((response)=>{
+ console.log(response) //this will return the details of the response but not the data
+ }) --> here after request is sent, it will wait for response and then execute nextstep(ie function inside then) we can save the response of the request as a parameter in the then().
+to get data attached to the response we will use response.json(). response.json() is asynchronous it returns a promise. so we will wait for the promise by return it in then function
+when then function returns a promise it will wait for the promise to complete before going to the next step. for the next step we will give an then function
+.then((productsData)=>{
+    console.log(productsData); //it results in an array of products.instead od giving jSON response it is converting it into array
+  }) --> here the response from the new promise will be saved inside the parameter of then function(ie here productsDetails)
 
 */
 

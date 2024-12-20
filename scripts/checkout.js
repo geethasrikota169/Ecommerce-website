@@ -1,14 +1,35 @@
 import {renderOrderSummary} from './checkout/orderSummary.js';
 import { renderPaymentSummary } from './checkout/paymentSummary.js';
-import { loadProducts } from '../data/products.js';
+import { loadProducts,loadProductsFetch } from '../data/products.js';
 import { loadCart } from '../data/cart.js';
 //import '../data/cart-oop.js';  //this syntax will run all the code in the file without importing anything
 //import '../data/cart-class.js'; 
 //import '../data/backend-practice.js';
 
+
+Promise.all([
+  loadProductsFetch(),  //this will return a promise and we can use it with promise.all().fetch returns a promise. 
+
+  new Promise((resolve)=>{
+    loadCart(()=>{
+      resolve();
+    });
+  })
+]).then((values)=>{ 
+  console.log(values); 
+  renderOrderSummary();
+  renderPaymentSummary();
+});
+
+
+
+
+
+
+/*
 Promise.all([
   new Promise((resolve)=>{
-    loadProducts(()=>{
+    loadProducts(()=>{  
       resolve('value1'); 
     });
   }),
@@ -24,7 +45,7 @@ Promise.all([
   renderPaymentSummary();
 });//array of promises. the promise.all() will wait for all promises to finish before going to the next step
 //both promises in the promise.all() are runned at the same time instead of waiting for each promise one bye one
-
+*/
 /*
 new Promise((resolve)=>{
   loadProducts(()=>{
