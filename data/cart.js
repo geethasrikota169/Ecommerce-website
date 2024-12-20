@@ -71,6 +71,19 @@ export function updateDeliveryOption(productId,deliveryOptionId){
 }
 
 
+//loading cart from backend. normally when we load cart from backend it will give cart array as it is practice this backend will give text
+export function loadCart(fun){
+  const xhr =  new XMLHttpRequest();
+
+  xhr.addEventListener('load',() => {
+   console.log(xhr.response);
+   fun(); 
+  });
+
+  xhr.open('GET','https://supersimplebackend.dev/cart');
+  xhr.send(); 
+}
+
 
 
 
