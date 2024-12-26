@@ -8,13 +8,29 @@ import { loadCart } from '../data/cart.js';
 
 
 async function loadPage(){
-  await loadProductsFetch();  
+
+  //handing error in async await
+  try{
+
+    //throw 'error1'; //manually creating am error. when we do this it will skip the rest of the code and goes to catch and then error1 is saved in paramter error in catch
+
+    await loadProductsFetch();  
   
-  const value = await new Promise((resolve)=>{
-    loadCart(()=>{
-      resolve('value3');
-    });
-  });  //value3 is stored in value variable
+    const value = await new Promise((resolve,reject)=>{
+      //throw 'error2'; //when we await a promise it will go directly to catch instead of going to .catch(). await makes it behave like synchronous code
+      loadCart(()=>{
+        //reject('error3');
+        resolve('value3');
+      });
+    });  //value3 is stored in value variable
+    //if any of the code inside try gets an error we can catch it using the code below and handle it by running the code inside catch.
+
+  }catch(error){
+    //the parameter error has the information regarding the error
+    console.log('Unexpected error. Please try again later.')
+  }
+
+
 
   renderOrderSummary();
   renderPaymentSummary();  
@@ -153,5 +169,16 @@ we can only use await, when we are inside async function.
 
 closet function has to be async. if a promise resolves with a value we can save the value in a variable when we use await. when we use await the value in resolve will get returned so we can save it in a variable
 use async await over promises and callback as it is more cleaner to read
+
+we can use try/catch with synchronous code(or normal code). when ever we get an error in try it will skip the rest of the code and go directly to the catch. 
+try/catch or anyother error handling methods are used when there are unexpected errors.
+we can manually create an error in async await by using throw
+
+if we are using promises there are 2 ways to manually create errors
+1. using throw example throw 'error2';
+2. inside a promise if we need to create an error in the future then we need to use different code.
+   throw doesnt work in the future.instead promise gve another way to create error
+   when we create a promise it gives us a secound parameter reject. reject() is a function and it lets us create an error in the future
+
 
 */

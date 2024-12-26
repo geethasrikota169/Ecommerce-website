@@ -80,10 +80,16 @@ export function loadProductsFetch(){
     
     }); 
    console.log('load products');
-  }); //this will send an request to the backend.this single line is same as below request using XMLHTTP...
+   //this will send an request to the backend.this single line is same as below request using XMLHTTP...
+  }).catch((error)=>{
+    console.log('Unexpected error. Please try again later.');
+  }); //handing errors in promises by using the method of promise catch(). the infomation about error is saved in parameter error. when there is an error the catch function will be runned.
 
   return promise; //to add more steps after the Promise we are saving the Promise in an variable promise and returning it. this way we can attach nextstep when calling the function
 }
+
+
+
 /*
 loadProductsFetch().then(()=>{
   console.log('next step');
@@ -110,6 +116,15 @@ export function loadProducts(fun){
    fun(); //running the code in amazon.js by calling the function
 
   });//the request will give an response of products list in JSON. need to convert it back into a javascript object or inthis case an javascript array.
+
+  //handing errors using callback
+  xhr.addEventListener('error',(error)=>{
+    console.log('Unexpected error. Please try again later.');
+  }); //if we get an error during the request we can handle with the function. when error is detected it will run the function
+  //the parameter error will contain some information about the error
+
+
+
 
   xhr.open('GET','https://supersimplebackend.dev/products')
   xhr.send(); //it only send the request doesnt wait for the response to come back for that we are using eventlistner
@@ -865,6 +880,12 @@ when then function returns a promise it will wait for the promise to complete be
 .then((productsData)=>{
     console.log(productsData); //it results in an array of products.instead od giving jSON response it is converting it into array
   }) --> here the response from the new promise will be saved inside the parameter of then function(ie here productsDetails)
+
+
+
+Error Handing:
+
+
 
 */
 
