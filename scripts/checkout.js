@@ -7,6 +7,35 @@ import { loadCart } from '../data/cart.js';
 //import '../data/backend-practice.js';
 
 
+async function loadPage(){
+  await loadProductsFetch();  
+  
+  const value = await new Promise((resolve)=>{
+    loadCart(()=>{
+      resolve('value3');
+    });
+  });  //value3 is stored in value variable
+
+  renderOrderSummary();
+  renderPaymentSummary();  
+} //load the products and then we will wait for it to finish.then we will load the cart and wait for it to finish and run the rest of the code
+loadPage();
+
+
+/*
+async function loadPage(){
+  console.log('load page');
+  
+  await loadProductsFetch();  //loads products from backend. this await waits for the line(loadproductsfetch) to finish before going to next line in the code
+  //it will wait until the products are loaded then mov to next line
+  return 'value2';    //this is will converted into resolve('value2'); in promises
+}
+loadPage().then((value)=>{  //as the function loadpage returns a promise we are using .then to add next step to the promise. value2 will be saved in the parameter value
+  console.log('next step');
+});
+*/
+
+/*
 Promise.all([
   loadProductsFetch(),  //this will return a promise and we can use it with promise.all().fetch returns a promise. 
 
@@ -21,7 +50,7 @@ Promise.all([
   renderPaymentSummary();
 });
 
-
+*/
 
 
 
@@ -110,4 +139,19 @@ new Promise((resolve)=>{
 
 while writing multiple promises it runs serially after one promise is done next promise will execute. for executing promises at a time we use promise.all()
 Promise.all() lets us run multipole promises at the same time.inside promise.all() we give an array. inside the array we give multiple promises to wait
+
+async await= even better way to handle asynchronous code.
+we are using promises before but promises creates a lot of code like resolve, then..
+async await is a shortcut for promises. when async word is kept infornt of a function it will make the function to return a promise.
+async = makes a function return a promise
+loadPage().then(); as the function returns a promise we can give it .then and add nextstep to the promise.
+async let us use another feature await. await=lets us wait for a promise to finish before going to the next line
+
+loadProductsFetch().then(()=>{}) --> here the then function is runned after loadproductsfetch is finished. here instead of using .then we can use await.
+await loadProductsfetch();  --> await lets us write asynchronous code like normal code
+we can only use await, when we are inside async function.
+
+closet function has to be async. if a promise resolves with a value we can save the value in a variable when we use await. when we use await the value in resolve will get returned so we can save it in a variable
+use async await over promises and callback as it is more cleaner to read
+
 */
