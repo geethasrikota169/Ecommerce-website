@@ -88,5 +88,23 @@
         </div>
       </div>
     </div>
+
+    <script>
+      const url =  new URL(window.location.href);
+      console.log(url.searchParams.get('orderId')); //gives value of orderId
+      console.log(url.searchParams.get('productId')); //gives value of productId
+    </script>
   </body>
 </html>
+
+<!--
+URL parameters lets us save data directly in the URL. to create a url paramter in url the example is
+http://127.0.0.1:5500/tracking.html for this url we can add url parameter as http://127.0.0.1:5500/tracking.html?orderId=123   here the leftside of eq ual is property(orderId) and 123 is value
+we can use js to get the url.fo rthat URL is a built in class. in the brackets we give the url from which we want to get the prameters from
+URL class analyses the url we give it an breaks it down to part and one part of it is parameters. to get that we use url.searchParams
+searchparms has a method called .get() this lets us get individual parameters. inside we give a string orderId the property in the url to get the value of it.
+URL paramters are aslo called search parameters
+
+we can save multiple parameters in the url by adding & and give another propertu
+http://127.0.0.1:5500/tracking.html?orderId=123&productId=456
+-->
